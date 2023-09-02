@@ -1,6 +1,6 @@
 import Image from "next/image"
 import useFoodProvider from "../hooks/useFoodProvider"
-import CategorySidebarCard from "./categorySidebarCard";
+import SidebarCategoryBtn from "./SidebarCategoryBtn";
 
 
 const Sidebar = () => {
@@ -19,9 +19,9 @@ const Sidebar = () => {
             alt="logo"
         />
 
-        <nav className="mt-5">
+        <nav className="mt-10">
             {categories.map (category => (
-                <CategorySidebarCard 
+                <SidebarCategoryBtn 
                     key={category.id}
                     category={category}
                 />

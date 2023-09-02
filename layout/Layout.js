@@ -5,7 +5,7 @@ export default function Layout ({children, page}) {
     return (
         <>
             <Head>
-                <title>Coffee - {page}</title>
+                <title>{`Coffee - ${page}`}</title>
                 <meta name="description" content="Food service App" />
             </Head>
 
@@ -15,8 +15,9 @@ export default function Layout ({children, page}) {
                 </aside>
 
                 <main className="md:w-8/12 xl:w-3/4 2xl:w-4/5 h-screen overflow-y-scroll">
-                    {children}
-                    MAIN
+                    <div className="p-10">
+                        {children}
+                    </div>
                 </main>
             </div>
         </>

@@ -6,6 +6,8 @@ const FoodContext = createContext()
 const FoodProvider = ({children}) => {
 
     const [categories, setCategories] = useState([])
+    const [currentCategory, setCurrentCategory] = useState({}) //this is the current active sidebar btn
+
     
     async function fetchCategories () {
         const url = "/api/categories"
@@ -22,11 +24,22 @@ const FoodProvider = ({children}) => {
         fetchCategories()
     },[])
 
+    useEffect ( ()=> {
+        setCurrentCategory(categories[0])
+    },[categories])
+
+    function handleClickSidebarCategoryBtn (id) {
+        const tmpCategory = categories.filter( category => category.id === id)
+        setCurrentCategory(tmpCategory[0])
+    }
+
 
     return (
     <FoodContext.Provider
         value={{
             categories,
+            handleClickSidebarCategoryBtn,
+            currentCategory,
         }}
     >
         {children}
