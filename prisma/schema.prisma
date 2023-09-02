@@ -32,5 +32,4 @@ model Order {
   date String
   total Float
   foodorder Json
-  
 }
