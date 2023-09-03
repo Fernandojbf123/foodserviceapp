@@ -1,7 +1,29 @@
 import Head from "next/head"
 import Sidebar from "../components/Sidebar"
+import Modal from 'react-modal';
+import useFoodProvider from "../hooks/useFoodProvider";
+import ModalProduct from "../components/ModalProduct";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"
+
+const customStyles = {
+    content: {
+      top: '50%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)',
+    },
+  };
+
+  Modal.setAppElement('#__next');
+
 
 export default function Layout ({children, page}) {
+
+    const {isSelectedProductModalActive} = useFoodProvider()
+
     return (
         <>
             <Head>
@@ -20,6 +42,16 @@ export default function Layout ({children, page}) {
                     </div>
                 </main>
             </div>
+
+            {isSelectedProductModalActive && (
+                <Modal 
+                    isOpen={isSelectedProductModalActive}
+                    style={customStyles}>
+                        <ModalProduct />
+                </Modal>
+            )}
+
+            <ToastContainer />
         </>
     )
 }
