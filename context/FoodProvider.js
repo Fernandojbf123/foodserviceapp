@@ -12,7 +12,7 @@ const FoodProvider = ({children}) => {
     const [selectedProduct, setSelectedProduct] = useState({}) //when add to cart button is pressed
     const [isSelectedProductModalActive, setIsSelectedProductModalActive] = useState(false);
     const [productsIntoCart, setProductsIntoCart] = useState([]);
-    const [userName, setUserName] = useState("")
+    const [clientName, setClientName] = useState("")
     const [total, setTotal] = useState(0);
 
     const router = useRouter();
@@ -108,7 +108,27 @@ const FoodProvider = ({children}) => {
 
     async function placeOrder(e) {
         e.preventDefault();
+        const url = "/api/orders"
+        try {
+            let date = Date.now().toString()
+            let dataToSend = {order: productsIntoCart, total, clientName, date}
+            const {data} = await axios.post(url, dataToSend)
+            toast.success("Pedido enviado exitosamente")
 
+            //reset the app
+            setCurrentCategory(categories[0])
+            setProductsIntoCart([])
+            setClientName("")
+            setTotal(0);
+            
+            setTimeout ( () => {
+                router.push("/")    
+            },3000)
+
+        } catch (error) {
+            console.log(error)
+            toast.error("No se pudo enviar el pedido")
+        }
     }
 
     return (
@@ -124,8 +144,8 @@ const FoodProvider = ({children}) => {
             handleAddToCart,
             productsIntoCart,
             deleteProductOfTheCart,
-            userName, 
-            setUserName,
+            clientName, 
+            setClientName,
             placeOrder,
             total,
         }}

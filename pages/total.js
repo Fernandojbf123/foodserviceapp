@@ -6,14 +6,14 @@ import { useCallback, useEffect, useState } from "react";
 const Total = () => {
 
 
-  const {productsIntoCart, userName, setUserName, placeOrder, total} = useFoodProvider();
+  const {productsIntoCart, clientName, setClientName, placeOrder, total} = useFoodProvider();
   const [canProceedPayment, setCanProceedPayment] = useState(false)
   const [message,setMessage] = useState("Debes tener al menos un producto y un nombre antes de confirmar el pedido")
 
   
   const checkCanProceedPayment = useCallback ( () => {
-    return (productsIntoCart.length === 0 || userName === "" || userName.length<3)
-  },[userName, productsIntoCart])
+    return (productsIntoCart.length === 0 || clientName === "" || clientName.length<3)
+  },[clientName, productsIntoCart])
 
   useEffect (() => {
     if (checkCanProceedPayment()){
@@ -40,20 +40,20 @@ const Total = () => {
           >
           <div className="flex flex-col gap-2 mt-10">
             <label
-              htmlFor="userName"
+              htmlFor="clientName"
               className="text-xl font-bold text-gray-700 uppercase"
               >{`Nombre`}
             </label>
 
             <input
-              id="userName"
-              name="userName"
+              id="clientName"
+              name="clientName"
               type="text"
               placeholder="María, José, Carlitos :D"
               className="bg-gray-200 w-full lg:w-1/3 rounded-md text-2xl font-bold"
-              value={userName}
+              value={clientName}
               onChange={ (e) => {
-                                setUserName(e.target.value)
+                                setClientName(e.target.value)
                                 
               }}
             />
