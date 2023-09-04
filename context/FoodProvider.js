@@ -1,6 +1,7 @@
 import {createContext, useEffect, useState} from "react"
 import axios from "axios"
 import { toast } from "react-toastify"
+import { useRouter } from "next/router"
 
 const FoodContext = createContext()
 
@@ -11,6 +12,7 @@ const FoodProvider = ({children}) => {
     const [selectedProduct, setSelectedProduct] = useState({}) //when add to cart button is pressed
     const [isSelectedProductModalActive, setIsSelectedProductModalActive] = useState(false);
     const [productsIntoCart, setProductsIntoCart] = useState([]);
+    const router = useRouter();
 
     
     async function fetchCategories () {
@@ -35,6 +37,7 @@ const FoodProvider = ({children}) => {
     function handleClickSidebarCategoryBtn (id) {
         const tmpCategory = categories.filter( category => category.id === id)
         setCurrentCategory(tmpCategory[0])
+        router.push("/")
     }
 
     function handleClickAddProduct (product) {
@@ -48,35 +51,51 @@ const FoodProvider = ({children}) => {
 
     function handleAddToCart ( product ) {
 
-        if( productsIntoCart.some( iProductIntoCart => iProductIntoCart.id === product.id) ) {
-            //The product exist, so I will update
-            let updatedProductsIntoCart = productsIntoCart.map ( iProductIntoCart => 
-                {if (iProductIntoCart.id === product.id) {
-                    return product
-                }
-                else {
-                    return iProductIntoCart
-                }  
-            })
-            setProductsIntoCart(checkQuantitiesOfProductsIntoCartGreaterThanZero(updatedProductsIntoCart))
-            toast.success("Modificado correctamente")
-        }
-        else{
-            //new product, i will add product
-            setProductsIntoCart([...productsIntoCart, product])
-            toast.success("Agregado al pedido")
+        try {
+
+            if( productsIntoCart.some( iProductIntoCart => iProductIntoCart.id === product.id) && product.quantity>0) {
+                //Update if the product exist and the new product quantity is > 0
+                updatedProductOfTheCart (product)
+            }
+            else if ( product.quantity === 0){
+                //Delete if the product exist and the new product quantity is === 0
+                deleteProductOfTheCart(product)
+            }
+            else{
+                //new product, i will add product
+                setProductsIntoCart([...productsIntoCart, product])
+                toast.success("Agregado al pedido")
+            }
+
+        } catch (error) {
+            console.log(error)
+            toast.error("No se pudo hacer su petición")
         }
     }
 
-    function checkQuantitiesOfProductsIntoCartGreaterThanZero (productsIntoCart) {
+    function updatedProductOfTheCart ( product) {
+        let updatedProductsIntoCart = productsIntoCart.map ( iProductIntoCart => 
+            {if (iProductIntoCart.id === product.id) {
+                return product
+            }
+            else {
+                return iProductIntoCart
+            }  
+        })
+        toast.success("Cantidad del producto modificada correctamente")
+        return setProductsIntoCart(updatedProductsIntoCart) 
+    }
+
+    function deleteProductOfTheCart ( product ) {
+        
         let updatedProductsIntoCart = productsIntoCart.filter ( iProductIntoCart => {
-            if (iProductIntoCart.quantity > 0 ) {
+            if (iProductIntoCart.id != product.id ) {
                 return iProductIntoCart
             }
         })
-        return updatedProductsIntoCart
+        toast.success("Producto eliminado del pedido")
+        return setProductsIntoCart(updatedProductsIntoCart)
     }
-
 
     return (
     <FoodContext.Provider
@@ -90,6 +109,7 @@ const FoodProvider = ({children}) => {
             selectedProduct,
             handleAddToCart,
             productsIntoCart,
+            deleteProductOfTheCart,
         }}
     >
         {children}

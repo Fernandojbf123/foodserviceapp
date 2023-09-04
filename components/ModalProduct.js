@@ -9,7 +9,7 @@ import ButtonPlus from "./ButtonPlus"
 const ModalProduct = () => {
 
     const { selectedProduct, handleProductModal, handleAddToCart, productsIntoCart } = useFoodProvider()
-    const { id, name, price, image, categoryId } = selectedProduct;
+    const { id, name, price, image } = selectedProduct;
     const [quantity, setQuantity] = useState(0);
     const [doesProductExist, setDoesProductExist] = useState(false)
     const [buttonText, setButtonText] = useState("Agregar al carrito")

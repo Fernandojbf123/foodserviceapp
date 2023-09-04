@@ -6,23 +6,24 @@ import { useState, useEffect } from "react";
 const ProductCard = ({product}) => {
 
     const {id, name, image, price } = product;
-    const {handleClickAddProduct, handleProductModal, productsIntoCart, selectedProduct} = useFoodProvider();
-    const [doesProductExist, setDoesProductExist] = useState(false)
+    const {handleClickAddProduct, handleProductModal, productsIntoCart } = useFoodProvider();
     const [quantity, setQuantity] = useState(0)
     
 
 
     useEffect (()=> {
         //check if this product is in the cart, if true set quantity to the current number of this product in the cart
-        if (productsIntoCart?.some (iProductIntoCart => iProductIntoCart.id === id)){
-            let filteredProduct = productsIntoCart.filter(iProductIntoCart => iProductIntoCart.id === id)
-            setDoesProductExist(true)
-            setQuantity(filteredProduct[0].quantity)
+        if (productsIntoCart.some (productIntoCart => productIntoCart.id=== id)) {
+            let currentProduct = productsIntoCart.filter( productIntoCart => productIntoCart.id === id) 
+            setQuantity(currentProduct[0].quantity)
+            return
         }
-    },[id,productsIntoCart])
+        setQuantity(0)
+        
+    },[id, productsIntoCart])
 
     return (
-        <div className={`border p-3 hover:bg-amber-100 ${doesProductExist ? "bg-amber-100" : ""}`}>
+        <div className={`border p-3 hover:bg-amber-100 ${quantity>0 ? "bg-amber-100" : ""}`}>
             <Image
                 width={500}
                 height={400}
