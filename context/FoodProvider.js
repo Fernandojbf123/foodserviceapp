@@ -12,6 +12,9 @@ const FoodProvider = ({children}) => {
     const [selectedProduct, setSelectedProduct] = useState({}) //when add to cart button is pressed
     const [isSelectedProductModalActive, setIsSelectedProductModalActive] = useState(false);
     const [productsIntoCart, setProductsIntoCart] = useState([]);
+    const [userName, setUserName] = useState("")
+    const [total, setTotal] = useState(0);
+
     const router = useRouter();
 
     
@@ -34,11 +37,18 @@ const FoodProvider = ({children}) => {
         setCurrentCategory(categories[0])
     },[categories])
 
+    useEffect ( () => {
+        let sum = productsIntoCart.reduce( (acc, productIntoCart) => productIntoCart.subTotal + acc, 0)
+        setTotal(sum)
+    },[productsIntoCart])
+
     function handleClickSidebarCategoryBtn (id) {
         const tmpCategory = categories.filter( category => category.id === id)
         setCurrentCategory(tmpCategory[0])
         router.push("/")
     }
+
+    
 
     function handleClickAddProduct (product) {
         //When click button AGREGAR of Product Card
@@ -50,12 +60,11 @@ const FoodProvider = ({children}) => {
     }
 
     function handleAddToCart ( product ) {
-
+        let subTotal = product.quantity*product.price;
         try {
-
             if( productsIntoCart.some( iProductIntoCart => iProductIntoCart.id === product.id) && product.quantity>0) {
                 //Update if the product exist and the new product quantity is > 0
-                updatedProductOfTheCart (product)
+                updatedProductOfTheCart ({...product, subTotal})
             }
             else if ( product.quantity === 0){
                 //Delete if the product exist and the new product quantity is === 0
@@ -63,7 +72,7 @@ const FoodProvider = ({children}) => {
             }
             else{
                 //new product, i will add product
-                setProductsIntoCart([...productsIntoCart, product])
+                setProductsIntoCart([...productsIntoCart, {...product, subTotal}])
                 toast.success("Agregado al pedido")
             }
 
@@ -97,6 +106,11 @@ const FoodProvider = ({children}) => {
         return setProductsIntoCart(updatedProductsIntoCart)
     }
 
+    async function placeOrder(e) {
+        e.preventDefault();
+
+    }
+
     return (
     <FoodContext.Provider
         value={{
@@ -110,6 +124,10 @@ const FoodProvider = ({children}) => {
             handleAddToCart,
             productsIntoCart,
             deleteProductOfTheCart,
+            userName, 
+            setUserName,
+            placeOrder,
+            total,
         }}
     >
         {children}

@@ -7,6 +7,7 @@ import useFoodProvider from '../hooks/useFoodProvider';
 const ResumeProductCard = ({ product }) => {
 
   const { id, name, price, image, quantity } = product;
+
   const {handleClickAddProduct, handleProductModal } = useFoodProvider();
 
   return (
