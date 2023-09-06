@@ -6,7 +6,7 @@ import KitchenOrderCard from "../components/KitchenOrderCard"
 
 const Admin = () => {
   
-    const url = "/api/orders"
+    const url = "/api/kitchenorder"
     async function fetcher () {
         try {
             const {data} = await axios.get(url)

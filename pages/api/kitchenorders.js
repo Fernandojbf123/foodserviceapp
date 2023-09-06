@@ -4,17 +4,18 @@ export default async function handler(req,res) {
     const prisma = new PrismaClient()
 
     //Fetch orders
-    const orders = await prisma.order.findMany( {
+    const kitchenorders = await prisma.kitchenOrder.findMany( {
         where:{
             status: false
         }
     })
-    res.status(200).json(orders)
+    res.status(200).json(kitchenorders)
 
 
     //Create an order
     if (req.method === "POST") {
-        const order = await prisma.order.create ({
+        console.log("METODO POST")
+        const kitchenorders = await prisma.kitchenOrder.create ({
             data: {
                 clientName: req.body.clientName,
                 total: req.body.total,
@@ -22,6 +23,6 @@ export default async function handler(req,res) {
                 order: req.body.order,
             }
         })
-        res.status(200).json(order)
+        res.status(200).json(kitchenorders)
     }
 }
