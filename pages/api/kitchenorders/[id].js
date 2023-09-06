@@ -5,7 +5,7 @@ export default async function handler(req, res) {
 
     if (req.method === "POST"){
         const {id} = req.query
-        const updatedOrder = await prisma.kitchenorder.update({
+        const updatedOrder = await prisma.kitchen.update({
             where: {
                 id: parseInt(id)
             },

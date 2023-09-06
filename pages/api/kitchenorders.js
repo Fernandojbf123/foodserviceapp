@@ -4,7 +4,7 @@ export default async function handler(req,res) {
     const prisma = new PrismaClient()
 
     //Fetch orders
-    const kitchenorders = await prisma.kitchenOrder.findMany( {
+    const kitchenorders = await prisma.kitchen.findMany( {
         where:{
             status: false
         }
@@ -15,7 +15,8 @@ export default async function handler(req,res) {
     //Create an order
     if (req.method === "POST") {
         console.log("METODO POST")
-        const kitchenorders = await prisma.kitchenOrder.create ({
+        console.log(req.body)
+        const kitchenorders = await prisma.kitchen.create ({
             data: {
                 clientName: req.body.clientName,
                 total: req.body.total,

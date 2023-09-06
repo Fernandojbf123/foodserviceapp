@@ -26,7 +26,7 @@ model Category {
   products Product[]
 }
 
-model KitchenOrder {
+model Kitchen {
   id Int @id @default(autoincrement())
   clientName String
   date String
@@ -34,3 +34,4 @@ model KitchenOrder {
   order Json
   status Boolean @default(false)
 }
+

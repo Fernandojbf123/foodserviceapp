@@ -112,10 +112,6 @@ const FoodProvider = ({children}) => {
         try {
             let date = Date.now().toString()
             let dataToSend = {order: productsIntoCart, total, clientName, date}
-            
-            console.log("estoy aca")
-            console.log(dataToSend)
-
             const {data} = await axios.post(url, dataToSend)
             toast.success("Pedido enviado exitosamente")
 
