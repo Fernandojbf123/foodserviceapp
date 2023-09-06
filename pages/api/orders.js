@@ -3,9 +3,17 @@ import { PrismaClient } from "@prisma/client";
 export default async function handler(req,res) {
     const prisma = new PrismaClient()
 
-    if (req.method === "POST") {
+    //Fetch orders
+    const orders = await prisma.order.findMany( {
+        where:{
+            status: false
+        }
+    })
+    res.status(200).json(orders)
 
-        console.log(req.body)
+
+    //Create an order
+    if (req.method === "POST") {
         const order = await prisma.order.create ({
             data: {
                 clientName: req.body.clientName,
@@ -14,7 +22,6 @@ export default async function handler(req,res) {
                 order: req.body.order,
             }
         })
-        console.log(order)
-        res.json({order})
+        res.status(200).json(order)
     }
 }
