@@ -8,7 +8,7 @@ const KitchenOrderCard = ({order}) => {
     const {id, clientName, order: clientOrder, status, total} = order
 
     async function handleOrderCompleted (e) {
-        const url = `/api/kitchenorder/${id}`
+        const url = `/api/kitchenorders/${id}`
         try {
             const data = await axios.post(url)
             toast.success("Orden completada")
