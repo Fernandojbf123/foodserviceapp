@@ -5,7 +5,7 @@ import useFoodProvider from "../hooks/useFoodProvider";
 import ModalProduct from "../components/ModalProduct";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"
-import Steps from "../components/steps";
+import Steps from "../components/Steps";
 
 const customStyles = {
     content: {
